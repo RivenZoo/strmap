@@ -1,0 +1,4 @@
+bazel-*
+.gopath
+target
+.idea

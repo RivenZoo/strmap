@@ -1,0 +1,10 @@
+ type: google.api.Service
+ config_version: 3
+
+ http:
+   rules:
+   - selector: apidef.StringMap.Map
+     get: /v1/strmap
+   - selector: apidef.StringMap.Map
+     post: /v1/strmap
+     body: "*"

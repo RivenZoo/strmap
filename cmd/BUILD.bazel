@@ -1,0 +1,25 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "gateway.go",
+        "main.go",
+        "root.go",
+        "serve.go",
+    ],
+    importpath = "strmap/cmd",
+    visibility = ["//visibility:private"],
+    deps = [
+        "//config:go_default_library",
+        "//vendor/github.com/mitchellh/go-homedir:go_default_library",
+        "//vendor/github.com/spf13/cobra:go_default_library",
+        "//vendor/github.com/spf13/viper:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "cmd",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)

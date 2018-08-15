@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package apidef;
+
+option go_package = "proto/apidef";
+
+service StringMap {
+    rpc Map(StrMapReq) returns (StrMapResp) {}
+}
+
+message StrMapReq {
+    string payload = 1;
+    string timestamp = 2;
+}
+
+message StrMapResp {
+    int32 ret = 1;
+    string msg = 2;
+    string result = 3;
+}
