@@ -12,3 +12,9 @@
 #### vendor
 
     cd .gopath/src/strmap && GOPATH=${GOPATH}:$(pwd)/../.. govendor add github.com/spf13/viper/... || true && cd -
+
+#### build
+
+    $ make cmd
+    or
+    $ bazel run //cmd
