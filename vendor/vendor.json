@@ -81,6 +81,18 @@
 			"revisionTime": "2018-08-04T22:03:15Z"
 		},
 		{
+			"checksumSHA1": "ZRhE1BjkcaROD1NZMZwICtPemTs=",
+			"path": "github.com/grpc-ecosystem/go-grpc-middleware",
+			"revision": "e9c5d9645c437ab1b204cff969a2c0fb16cd4276",
+			"revisionTime": "2018-05-22T10:52:15Z"
+		},
+		{
+			"checksumSHA1": "mlh8jfZweEtX64NHqAyXHKm94kA=",
+			"path": "github.com/grpc-ecosystem/go-grpc-middleware/recovery",
+			"revision": "e9c5d9645c437ab1b204cff969a2c0fb16cd4276",
+			"revisionTime": "2018-05-22T10:52:15Z"
+		},
+		{
 			"checksumSHA1": "dwMabg/HM33UP+EXpf7rJLzq6e8=",
 			"path": "github.com/grpc-ecosystem/grpc-gateway/runtime",
 			"revision": "bb916ca4f209e5f2a004537658d944ef4ae4409e",
