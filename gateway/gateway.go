@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc/balancer/roundrobin"
+	"context"
+	"time"
 )
 
 func StartGateway(endpoint, listen string) error {
@@ -21,6 +23,7 @@ func StartGateway(endpoint, listen string) error {
 	}
 
 	engine := gin.New()
+	engine.Use(gin.Recovery(), gin.Logger())
 	engine.Any("/", gin.WrapH(mux))
 	server := http.Server{
 		Addr:    listen,
@@ -29,7 +32,11 @@ func StartGateway(endpoint, listen string) error {
 	go func() {
 		select {
 		case <-ctx.Done():
-			server.Close()
+			func() {
+				tmCtx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+				defer cancel()
+				server.Shutdown(tmCtx)
+			}()
 		}
 	}()
 	return server.ListenAndServe()
