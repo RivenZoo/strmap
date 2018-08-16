@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package apidef;
 
-option go_package = "proto/apidef";
+option go_package = "strmap/proto/apidef";
 
 service StringMap {
     rpc Map(StrMapReq) returns (StrMapResp) {}
