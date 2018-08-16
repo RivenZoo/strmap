@@ -34,6 +34,7 @@ $(BASEDIR):
 	@-ln -s $(PROJDIR) $(BASEDIR)
 
 proto: $(proto_target)
+	cp -R strmap/* ./
 
 cmd: $(BUILD_DIR)/strmap
 

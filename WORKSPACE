@@ -18,6 +18,12 @@ go_rules_dependencies()
 
 go_register_toolchains()
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
+load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 gazelle_dependencies()
+
+go_repository(
+    name = "com_github_grpc_ecosystem_go_grpc_middleware",
+    commit = "e9c5d9645c437ab1b204cff969a2c0fb16cd4276",
+    importpath = "github.com/grpc-ecosystem/go-grpc-middleware",
+)
