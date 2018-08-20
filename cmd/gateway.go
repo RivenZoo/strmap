@@ -5,6 +5,8 @@ import (
 	"github.com/spf13/viper"
 	"strmap/gateway"
 	"strmap/config"
+	sigutil "strmap/signal"
+	"strmap/tracing"
 )
 
 var BackendEndpoint *string
@@ -15,7 +17,11 @@ var gatewayCmd = &cobra.Command{
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg := config.GetConfig()
-		gateway.StartGateway(cfg.Gateway.Endpoint, cfg.Listen)
+		ctx := sigutil.RegisterDoneSignal()
+		if cfg.Debug.Trace {
+			go tracing.StartGRPCTraceHTTPServer(ctx, cfg.Debug.GRPCTraceAddress)
+		}
+		gateway.StartGateway(ctx, cfg.Gateway.Endpoint, cfg.Listen)
 	},
 }
 

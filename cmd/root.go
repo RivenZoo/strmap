@@ -63,8 +63,12 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolP("debug.trace", "T", false, "debug trace switch")
+	rootCmd.PersistentFlags().StringP("debug.grpctraceaddress", "", ":15031", "grpc trace http server listen address")
 
 	viper.BindPFlag("listen", rootCmd.PersistentFlags().Lookup("listen"))
+	viper.BindPFlag("debug.trace", rootCmd.PersistentFlags().Lookup("debug.trace"))
+	viper.BindPFlag("debug.grpctraceaddress", rootCmd.PersistentFlags().Lookup("debug.grpctraceaddress"))
 }
 
 // initConfig reads in config file and ENV variables if set.

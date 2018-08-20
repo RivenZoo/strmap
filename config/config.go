@@ -3,9 +3,13 @@ package config
 import "encoding/json"
 
 type Config struct {
-	Listen   string
-	Gateway struct{
+	Listen string
+	Gateway struct {
 		Endpoint string
+	}
+	Debug struct {
+		Trace            bool
+		GRPCTraceAddress string
 	}
 }
 

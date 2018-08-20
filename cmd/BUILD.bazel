@@ -14,6 +14,8 @@ go_library(
         "//config:go_default_library",
         "//gateway:go_default_library",
         "//rpcserver:go_default_library",
+        "//signal:go_default_library",
+        "//tracing:go_default_library",
         "//vendor/github.com/mitchellh/go-homedir:go_default_library",
         "//vendor/github.com/spf13/cobra:go_default_library",
         "//vendor/github.com/spf13/viper:go_default_library",

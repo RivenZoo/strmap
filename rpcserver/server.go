@@ -3,7 +3,6 @@ package rpcserver
 import (
 	"golang.org/x/net/context"
 	"strmap/proto/apidef"
-	sigutil "strmap/signal"
 	"google.golang.org/grpc"
 	"net"
 	"crypto/md5"
@@ -25,8 +24,7 @@ func (s *strmapServer) Map(ctx context.Context, req *apidef.StrMapReq) (*apidef.
 	}, nil
 }
 
-func StartRPCServer(listen string) error {
-	ctx := sigutil.RegisterDoneSignal()
+func StartRPCServer(ctx context.Context, listen string) error {
 
 	server := grpc.NewServer(grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 		grpc_recovery.UnaryServerInterceptor(),

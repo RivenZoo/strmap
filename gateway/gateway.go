@@ -3,7 +3,6 @@ package gateway
 import (
 	"net/http"
 	"strmap/proto/apidef"
-	sigutil "strmap/signal"
 	"google.golang.org/grpc"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc/balancer/roundrobin"
@@ -11,9 +10,7 @@ import (
 	"time"
 )
 
-func StartGateway(endpoint, listen string) error {
-	ctx := sigutil.RegisterDoneSignal()
-
+func StartGateway(ctx context.Context, endpoint, listen string) error {
 	marshaler := &runtime.JSONPb{
 		OrigName:     true,
 		EmitDefaults: true,

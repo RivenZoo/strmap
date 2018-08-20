@@ -4,6 +4,9 @@ import (
 	"strmap/rpcserver"
 	"strmap/config"
 	"github.com/spf13/cobra"
+
+	sigutil "strmap/signal"
+	"strmap/tracing"
 )
 
 var serveCmd = &cobra.Command{
@@ -12,7 +15,11 @@ var serveCmd = &cobra.Command{
 	Long:  "",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg := config.GetConfig()
-		rpcserver.StartRPCServer(cfg.Listen)
+		ctx := sigutil.RegisterDoneSignal()
+		if cfg.Debug.Trace {
+			go tracing.StartGRPCTraceHTTPServer(ctx, cfg.Debug.GRPCTraceAddress)
+		}
+		rpcserver.StartRPCServer(ctx, cfg.Listen)
 	},
 }
 
