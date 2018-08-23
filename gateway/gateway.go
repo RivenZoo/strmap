@@ -8,6 +8,8 @@ import (
 	"google.golang.org/grpc/balancer/roundrobin"
 	"context"
 	"time"
+	"google.golang.org/grpc/metadata"
+	"fmt"
 )
 
 func StartGateway(ctx context.Context, endpoint, listen string) error {
@@ -15,7 +17,10 @@ func StartGateway(ctx context.Context, endpoint, listen string) error {
 		OrigName:     true,
 		EmitDefaults: true,
 	}
-	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler))
+	mux := runtime.NewServeMux(runtime.WithMarshalerOption(runtime.MIMEWildcard, marshaler),
+		runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
+			return metadata.Pairs("TimeStamp", fmt.Sprintf("%d", time.Now().Unix()))
+		}))
 	dialOpt := []grpc.DialOption{grpc.WithInsecure(), grpc.WithBalancerName(roundrobin.Name)}
 	err := apidef.RegisterStringMapHandlerFromEndpoint(ctx, mux, endpoint, dialOpt)
 	if err != nil {
