@@ -26,7 +26,7 @@ $(PB_DIR)/%.pb.go: $(PROTO_DIR)/%.proto $(PROTO_DIR)/%.yaml
 		--swagger_out=logtostderr=true,grpc_api_configuration=$(patsubst %.proto,%.yaml,$<):$(PROTO_DIR)/doc \
 		--go_out=plugins=grpc:$(PB_DIR) $<
 
-gopath: | $(BASEDIR)
+#gopath: | $(BASEDIR)
 
 $(BASEDIR):
 	@echo "gopath: " $(GOPATH)
@@ -39,7 +39,7 @@ proto: $(proto_target)
 cmd: $(BUILD_DIR)/strmap
 
 $(BUILD_DIR)/strmap: $(GOSRC)
-	GOPATH=$(GOPATH) cd $(BASEDIR); go build -o $@ cmd/*.go
+	go build -o $@ cmd/*.go
 
 clean:
 	@-rm -f $(proto_target) $(BUILD_DIR)/*
