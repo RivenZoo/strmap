@@ -1,6 +1,7 @@
 .PHONY: cmd gopath proto
 
 include make.env
+include make_gopath.mk
 
 PROTOC = protoc
 PB_DIR = .
@@ -26,20 +27,13 @@ $(PB_DIR)/%.pb.go: $(PROTO_DIR)/%.proto $(PROTO_DIR)/%.yaml
 		--swagger_out=logtostderr=true,grpc_api_configuration=$(patsubst %.proto,%.yaml,$<):$(PROTO_DIR)/doc \
 		--go_out=plugins=grpc:$(PB_DIR) $<
 
-#gopath: | $(BASEDIR)
-
-$(BASEDIR):
-	@echo "gopath: " $(GOPATH)
-	@-mkdir -p $(dir $(BASEDIR))
-	@-ln -s $(PROJDIR) $(BASEDIR)
-
 proto: $(proto_target)
 	cp -R strmap/* ./
 
 cmd: $(BUILD_DIR)/strmap
 
-$(BUILD_DIR)/strmap: $(GOSRC)
-	go build -o $@ cmd/*.go
+$(BUILD_DIR)/strmap: $(GOSRC) gopath
+	cd $(PROJ_GOPATH) && go build -o $@ cmd/*.go
 
 clean:
 	@-rm -f $(proto_target) $(BUILD_DIR)/*

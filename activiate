@@ -39,15 +39,15 @@ function __get_realpath() {
 }
 
 function __project_gopath() {
-	if [[ -z "${WORKDIR}" ]]; then
-		__log "WORKDIR=${WORKDIR} invalid"
+	if [[ -z "${PROJ_NAME}" ]]; then
+		__log "PROJ_NAME=${PROJ_NAME} invalid"
 		return -1
 	fi
 	pathmd5=
 	if [[ "${OS}" = "Linux" ]]; then
-		pathmd5=$(echo ${WORKDIR} | md5sum | awk '{print $1}')
+		pathmd5=$(echo ${PROJ_NAME} | md5sum | awk '{print $1}')
 	elif [[ "${OS}" = "Darwin" ]]; then
-		pathmd5=$(echo ${WORKDIR} | md5)
+		pathmd5=$(echo ${PROJ_NAME} | md5)
 	else
 		__log "os ${OS} not support"
 		return -1
@@ -59,7 +59,7 @@ function __set_goenv {
 	if [ ! -f "${GOENV_GOPATH}/workdir" ]; then
 		mkdir -p ${GOENV_HOME}
 		mkdir -p ${GOENV_GOPATH}/src ${GOENV_GOPATH}/bin ${GOENV_GOPATH}/pkg
-		ln -s ${WORKDIR} ${GOENV_GOPATH}/src/$(basename ${WORKDIR})
+		ln -s ${WORKDIR} ${GOENV_GOPATH}/src/${PROJ_NAME}
 		echo ${WORKDIR} > ${GOENV_GOPATH}/workdir
 	fi
 	
@@ -83,7 +83,7 @@ function __set_goenv {
 	export OLD_GOPATH
 	export OLD_WORKDIR
 
-	cd ${GOENV_GOPATH}/src/$(basename ${WORKDIR})
+	cd ${GOENV_GOPATH}/src/${PROJ_NAME}
 }
 
 function __get_shell {
@@ -105,6 +105,7 @@ function __debug {
 
 # *** variable define ***
 WORKDIR=$(dirname $(__get_realpath $0))
+PROJ_NAME=$(basename ${WORKDIR})
 
 # private gopath
 GOENV_GOPATH=$(__project_gopath)

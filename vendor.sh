@@ -34,13 +34,13 @@ function add_by_git_repo_url {
 	if [[ -d ${local_repo} ]]; then
 		log "${local_repo} already exist"
 		if [[ -n "${spec}" ]]; then
-			(cd ${local_repo} && git checkout ${spec})
+			(cd ${local_repo} && git fetch --all --tags --prune && git checkout ${spec})
 		fi
 	else
 		if [[ -n "${spec}" ]]; then
-			git clone --branch ${spec} ${repo} ${local_repo}
+			git clone --branch ${spec} ${repo} ${local_repo} && git checkout ${spec}
 		else
-			git clone ${repo} ${local_repo}
+			git clone ${repo} ${local_repo} && git checkout master
 		fi
 		
 	fi
@@ -55,7 +55,7 @@ function add_by_module_path {
 	if [[ -n "${spec}" ]]; then
 		fetch_url=${fetch_url}@${spec}
 	fi
-	${GOVENDOR} fetch ${fetch_url}
+	${GOVENDOR} get ${fetch_url}
 }
 
 function add {
@@ -81,10 +81,18 @@ function update {
 		log "need module_import_path"
 		exit 0
 	fi
+	
+	gopath=${GOPATH%%:*}
+	local_repo=${gopath}/src/${repo}
+
 	fetch_url=${repo}
+	update_cmd=(cd ${local_repo} && git checkout master && git pull --rebase origin master)
 	if [[ -n "${spec}" ]]; then
 		fetch_url=${fetch_url}@${spec}
+		update_cmd=(cd ${local_repo} && git fetch --all --tags --prune && git checkout ${spec})
 	fi
+	${update_cmd}
+
 	${GOVENDOR} update ${fetch_url}
 }
 
